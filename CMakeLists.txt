@@ -51,6 +51,8 @@ add_library(QTipUIKit STATIC
         src/UIContext.cpp
         include/QTipUIKit/UIContext.h
         src/UIObject.cpp
+        include/QTipUIKit/Widgets/BarChart/BarChart.tpp
+        include/QTipUIKit/Widgets/BarChart/BarChart.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)

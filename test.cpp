@@ -2,6 +2,7 @@
 #include "QTipUIKit/UIKit.h"
 #include "QTipUIKit/Containers/ScrollView.h"
 #include "QTipUIKit/Dialogs/Dialog.h"
+#include "QTipUIKit/Widgets/BarChart/BarChart.h"
 #include "QTipUIKit/Widgets/Dropdown/Dropdown.h"
 #include "QTipUIKit/Widgets/PieChart/PieChart.h"
 
@@ -96,7 +97,7 @@ int main() {
     buttonStyle.fontColor = Color::white;
 
     auto& button = hbox.add<Button>(
-        Rect{20, 500, 200, 60},
+        Rect{20, 500, 60, 60},
         "Click me",
         buttonStyle
     );
@@ -113,13 +114,13 @@ int main() {
     auto& checkboxLabel = hbox.add<Label>("Button Enabled", Color::white, Point{270, 520}, font);
 
     auto& dialogButton = hbox.add<Button>(
-        Rect{20, 580, 200, 60},
+        Rect{20, 580, 60, 60},
         "Dialog",
         buttonStyle
     );
 
     auto& pieChartButton = hbox.add<Button>(
-        Rect{20, 580, 200, 60},
+        Rect{20, 580, 60, 60},
         "PieChart",
         buttonStyle
     );
@@ -228,6 +229,85 @@ int main() {
 
         okButton.setOnClick([&] {
             dialog.close();
+        });
+
+        auto& barChartButton = buttons.add<Button>(
+            Rect{0, 0, 100, buttons.rect().size.y},
+            "BarChart",
+            buttonStyle
+        );
+
+        barChartButton.setOnClick([&window, buttonStyle] {
+            auto& dialog = Dialog::create(window);
+
+            auto& buttons = dialog.buttons();
+            auto& content = dialog.content();
+
+            auto& contentVBox = content.add<VBox>(
+                Rect{0, 0, content.rect().size}
+            );
+
+            contentVBox.setSizing(Sizing::Stretch);
+            contentVBox.setCrossSizing(CrossSizing::Stretch);
+
+            auto& barChart = contentVBox.add<BarChart<int>>(
+                Rect{0, 0, 100, 100},
+                std::vector{
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+                },
+                BarChartFormatters<int>{
+                    .value = [](int& value) {
+                        return value;
+                    },
+                    .label = [](int& value) {
+                        return std::to_string(value);
+                    }
+                },
+                true
+            );
+
+            dialog.setContentResizeHandler([&](Point size) {
+                contentVBox.resize(size);
+            });
+
+            auto& randomizeButton = buttons.add<Button>(
+                Rect{0, 0, 120, buttons.rect().size.y},
+                "Randomize",
+                buttonStyle
+            );
+
+            randomizeButton.setOnClick([&barChart] {
+                std::vector<int> values;
+                values.reserve(30);
+
+                for (int i = 0; i < 30; ++i) {
+                    values.push_back((1 + (std::rand() % 100)) - 50);
+                }
+
+                barChart.setData(
+                    std::move(values),
+                    BarChartFormatters<int>{
+                        .value = [](int& value) {
+                            return value;
+                        },
+                        .label = [](int& value) {
+                            return std::to_string(value);
+                        }
+                    }
+                );
+            });
+
+            auto& okButton = buttons.add<Button>(
+                Rect{0, 0, 100, buttons.rect().size.y},
+                "Ok",
+                buttonStyle
+            );
+
+            okButton.setOnClick([&dialog] {
+                dialog.close();
+            });
         });
     });
 

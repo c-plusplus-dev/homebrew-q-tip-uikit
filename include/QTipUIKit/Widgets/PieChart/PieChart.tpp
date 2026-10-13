@@ -199,7 +199,7 @@ bool PieChart<T>::handleEvent(const SDL_Event& event) {
 
 template <typename T>
 QTip::Point PieChart<T>::minimumSize() const {
-    return {110, 110}; // at least hundred with padding
+    return {100, 100}; // at least hundred
 }
 
 template <typename T>
@@ -234,9 +234,9 @@ void PieChart<T>::tick(QTip::Clock&, double dt) {
     for (int i = 0; i < _items.size(); i++) {
         auto& item = _items[i];
         if (_hoveredOn == i)
-            item.expand = std::min(item.expand + 150.0 * dt, 20.0);
+            item.expand = std::min(item.expand + 60.0 * dt, 20.0);
         else
-            item.expand = std::max(item.expand - 150.0 * dt, 0.0);
+            item.expand = std::max(item.expand - 60.0 * dt, 0.0);
 
         if (item.animatedPercent != item.percent) {
             double speed = (item.percent - item.animatedPercent) / 0.75;
