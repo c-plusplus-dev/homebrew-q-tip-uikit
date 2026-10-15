@@ -15,10 +15,12 @@ Panel::Panel(const QTip::Rect rect) {
     _preferredRect = rect;
 }
 
-void Panel::renderImpl(QTip::Window& window) {
-    QTip::RenderTarget target{window.getRenderer(), _rect.size};
+Panel::~Panel() = default;
 
-    window->setTarget(target);
+void Panel::renderImpl(QTip::Window& window) {
+    initTarget();
+
+    window->setTarget(*target);
 
     //window->setRenderColor(QTip::Color::white);
     //window->renderRect({0, 0, _rect.size});
@@ -29,7 +31,20 @@ void Panel::renderImpl(QTip::Window& window) {
 
     window->resetTarget();
 
-    window->renderTexture(target, QTip::Rect::zero, _rect);
+    window->renderTexture(*target, QTip::Rect::zero, _rect);
+}
+
+void Panel::initTarget() {
+    if (!_window)
+        return;
+
+    if (target && target->size() == _rect.size)
+        return;
+
+    target = std::make_unique<QTip::RenderTarget>(
+        _window->getRenderer(),
+        _rect.size
+    );
 }
 
 bool Panel::handleEvent(const SDL_Event& event) {

@@ -12,6 +12,8 @@ class Panel : public UIObject {
 public:
     Panel(QTip::Rect rect);
 
+    ~Panel() override;
+
     bool handleEvent(const SDL_Event& event) override;
 
     void resize(QTip::Rect rect);
@@ -51,11 +53,14 @@ protected:
     QTip::Rect _rect{};
     std::vector<std::unique_ptr<UIObject>> _objects;
 
+    std::unique_ptr<QTip::RenderTarget> target;
+
     std::vector<UIObject*> _sortedObjects() const;
 
     virtual void onAddObject(UIObject* object);
 
     void renderImpl(QTip::Window& window) override;
+    void initTarget();
 };
 
 #endif //QTIPUIKIT_PANEL_H

@@ -103,8 +103,4 @@ static bool operator>(const QTip::Point& lhs, const QTip::Point& rhs) {
     return lhs.x > rhs.x && lhs.y > rhs.y;
 }
 
-static bool operator==(const QTip::Point& lhs, const QTip::Point& rhs) {
-    return lhs.x == rhs.x && lhs.y == rhs.y;
-}
-
 #endif //QTIPUIKIT_HELPERS_H
