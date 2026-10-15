@@ -17,10 +17,12 @@ Label::Label(const std::string& text, QTip::Color color, QTip::Point position, c
 }
 
 void Label::renderImpl(QTip::Window& window) {
+    window->setBlendMode(QTip::RenderBlendMode::None);
     if (_centered)
         window->renderTextCentered(_font, _text.c_str(), _position.x, _position.y, _color);
     else
         window->renderText(_font, _text.c_str(), _position.x, _position.y, _color);
+    window->resetBlendMode();
 }
 
 QTip::Point Label::minimumSize() const {

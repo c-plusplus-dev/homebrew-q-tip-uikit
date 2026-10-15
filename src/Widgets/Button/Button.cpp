@@ -91,7 +91,9 @@ void Button::renderImpl(QTip::Window& window) {
     }
     window->renderRoundedRect(_rect, 10);
 
+    window->setBlendMode(QTip::RenderBlendMode::None);
     window->renderTextCentered(_style.font, _text.c_str(), _rect.center().x, _rect.center().y, _style.fontColor);
+    window->resetBlendMode();
 }
 
 void Button::setText(std::string text) {
