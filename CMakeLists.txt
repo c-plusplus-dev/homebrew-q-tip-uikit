@@ -104,7 +104,6 @@ target_link_libraries(QTipUIKitTest PUBLIC
 
 add_executable(QTipUIKitTest2
     test2.cpp
-        test2.cpp
 )
 
 target_link_libraries(QTipUIKitTest2 PUBLIC

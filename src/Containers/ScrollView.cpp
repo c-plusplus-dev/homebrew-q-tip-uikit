@@ -172,12 +172,14 @@ bool ScrollView::y() const {
 }
 
 void ScrollView::renderImpl(QTip::Window& window) {
-    QTip::RenderTarget target{
-        window.getRenderer(),
-        _contentSize
-    };
+    initTarget();
 
-    window->setTarget(target);
+    window->setTarget(*target);
+
+    window->setBlendMode(QTip::RenderBlendMode::None);
+    window->setRenderColor(QTip::Color::clear);
+    window->renderRect({0, 0, _rect.size});
+    window->resetBlendMode();
 
     for (const auto& child : _objects) {
         const QTip::Rect childRect = child->rect();
@@ -202,7 +204,7 @@ void ScrollView::renderImpl(QTip::Window& window) {
     size.y = std::min(size.y, _contentSize.y);
 
     window->renderTexture(
-        target,
+        *target,
         QTip::Rect{
             .origin = _scrollPosition,
             .size = size

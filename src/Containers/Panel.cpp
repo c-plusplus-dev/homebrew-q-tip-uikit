@@ -22,8 +22,10 @@ void Panel::renderImpl(QTip::Window& window) {
 
     window->setTarget(*target);
 
-    //window->setRenderColor(QTip::Color::white);
-    //window->renderRect({0, 0, _rect.size});
+    window->setBlendMode(QTip::RenderBlendMode::None);
+    window->setRenderColor(QTip::Color::clear);
+    window->renderRect({0, 0, _rect.size});
+    window->resetBlendMode();
 
     for (const auto& object : _objects) {
         object->render(window);
