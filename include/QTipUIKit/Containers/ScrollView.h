@@ -71,6 +71,8 @@ private:
 
 protected:
     void renderImpl(QTip::Window& window) override;
+
+    void initTarget() override;
 };
 
 

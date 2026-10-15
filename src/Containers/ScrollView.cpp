@@ -178,7 +178,7 @@ void ScrollView::renderImpl(QTip::Window& window) {
 
     window->setBlendMode(QTip::RenderBlendMode::None);
     window->setRenderColor(QTip::Color::clear);
-    window->renderRect({0, 0, _rect.size});
+    window->renderRect({0, 0, _contentSize});
     window->resetBlendMode();
 
     for (const auto& child : _objects) {
@@ -219,6 +219,19 @@ void ScrollView::renderImpl(QTip::Window& window) {
         _horizontalScrollBar->render(window);
     if (y() && _contentSize.y > rect().size.y && _settings.showScrollbar)
         _verticalScrollBar->render(window);
+}
+
+void ScrollView::initTarget() {
+    if (!_window)
+        return;
+
+    if (target && target->size() == _contentSize)
+        return;
+
+    target = std::make_unique<QTip::RenderTarget>(
+        _window->getRenderer(),
+        _contentSize
+    );
 }
 
 bool ScrollView::handleEvent(const SDL_Event& event) {

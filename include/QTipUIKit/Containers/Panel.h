@@ -60,7 +60,7 @@ protected:
     virtual void onAddObject(UIObject* object);
 
     void renderImpl(QTip::Window& window) override;
-    void initTarget();
+    virtual void initTarget();
 };
 
 #endif //QTIPUIKIT_PANEL_H
