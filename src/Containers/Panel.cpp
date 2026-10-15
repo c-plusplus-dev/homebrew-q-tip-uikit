@@ -61,14 +61,6 @@ bool Panel::handleEvent(const SDL_Event& event) {
     return true;
 }
 
-void Panel::resize(const QTip::Rect rect) {
-    _rect = rect;
-}
-
-const QTip::Rect& Panel::rect() const {
-    return _rect;
-}
-
 void Panel::remove(UIObject& object) {
     const auto it = std::ranges::find_if(_objects,
          [&object](const std::unique_ptr<UIObject>& ptr) {

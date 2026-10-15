@@ -16,9 +16,6 @@ public:
 
     bool handleEvent(const SDL_Event& event) override;
 
-    void resize(QTip::Rect rect);
-    [[nodiscard]] const QTip::Rect& rect() const;
-
     template<std::derived_from<UIObject> T, typename... Args>
     T& add(Args&&... args) {
         auto object = std::make_unique<T>(
