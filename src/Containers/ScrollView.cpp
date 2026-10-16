@@ -242,20 +242,22 @@ bool ScrollView::handleEvent(const SDL_Event& event) {
     SDL_Event localEvent =
         Detail::transformEvent(event, _rect.origin);
 
-    bool x = !_horizontalScrollBar->handleEvent(event);
-    bool y = !_verticalScrollBar->handleEvent(event);
+    if (_settings.showScrollbar) {
+        bool x = !_horizontalScrollBar->handleEvent(event);
+        bool y = !_verticalScrollBar->handleEvent(event);
 
-    const float maxX =
-        std::max(0.0f, _contentSize.x - rect().size.x);
+        const float maxX =
+            std::max(0.0f, _contentSize.x - rect().size.x);
 
-    const float maxY =
-        std::max(0.0f, _contentSize.y - rect().size.y);
+        const float maxY =
+            std::max(0.0f, _contentSize.y - rect().size.y);
 
-    _scrollPosition.x = _horizontalScrollBar->position() * maxX;
-    _scrollPosition.y = _verticalScrollBar->position() * maxY;
+        _scrollPosition.x = _horizontalScrollBar->position() * maxX;
+        _scrollPosition.y = _verticalScrollBar->position() * maxY;
 
-    if (x || y)
-        return false;
+        if (x || y)
+            return false;
+    }
 
     localEvent =
         Detail::transformEvent(event, _rect.origin - _scrollPosition);
