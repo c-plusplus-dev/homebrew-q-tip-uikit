@@ -95,6 +95,14 @@ const ScrollViewSettings& ScrollView::settings() const {
     return _settings;
 }
 
+void ScrollView::setScrollSpeed(float scrollSpeed) {
+    _settings.scrollSpeed = scrollSpeed;
+}
+
+void ScrollView::showScrollbars(bool show) {
+    _settings.showScrollbar = show;
+}
+
 void ScrollView::clampScrollPosition() {
     const float viewportWidth = rect().size.x;
     const float viewportHeight = rect().size.y;

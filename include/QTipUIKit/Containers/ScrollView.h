@@ -45,6 +45,9 @@ public:
     [[nodiscard]]
     const ScrollViewSettings& settings() const;
 
+    void setScrollSpeed(float scrollSpeed);
+    void showScrollbars(bool show);
+
     bool handleEvent(const SDL_Event& event) override;
 
     void resize(QTip::Point size) override;
