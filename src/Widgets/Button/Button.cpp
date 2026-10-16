@@ -89,7 +89,9 @@ void Button::renderImpl(QTip::Window& window) {
         window->setRenderColor(_style.disabledColor);
         break;
     }
+    window->setBlendMode(QTip::RenderBlendMode::Blend);
     window->renderRoundedRect(_rect, 10);
+    window->resetBlendMode();
 
     window->setBlendMode(QTip::RenderBlendMode::None);
     window->renderTextCentered(_style.font, _text.c_str(), _rect.center().x, _rect.center().y, _style.fontColor);
