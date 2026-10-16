@@ -22,6 +22,16 @@ bool List::handleEvent(const SDL_Event& event) {
     return Panel::handleEvent(event);
 }
 
+void List::remove(UIObject& object) {
+    Panel::remove(object);
+    updateLayout();
+}
+
+void List::clear() {
+    Panel::clear();
+    updateLayout();
+}
+
 void List::setDirection(Direction direction) {
     _direction = direction;
     updateLayout();

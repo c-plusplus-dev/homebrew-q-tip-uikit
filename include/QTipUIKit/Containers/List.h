@@ -26,11 +26,17 @@ public:
 
     bool handleEvent(const SDL_Event& event) override;
 
+    void remove(UIObject& object) override;
+
+    void clear() override;
+
     void setDirection(Direction direction);
     Direction direction() const;
 
     void setSpacing(float spacing);
     float spacing() const;
+
+    void updateLayout();
 
 protected:
     void onAddObject(UIObject* object) override;
@@ -43,7 +49,6 @@ private:
 
     void layout();
     void resizeToFitChildren();
-    void updateLayout();
 };
 
 #endif // QTIPUIKIT_LIST_H
