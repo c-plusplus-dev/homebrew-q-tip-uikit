@@ -48,7 +48,6 @@ public:
 private:
     CheckboxStyle _style;
     CheckboxState _state = CheckboxState::Normal;
-    QTip::Rect _rect{};
 
     bool _disabled = false;
 

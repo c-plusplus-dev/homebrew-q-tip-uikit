@@ -47,7 +47,6 @@ public:
 private:
     void init(QTip::Rect rect, const std::optional<QTip::Font>& font = std::nullopt);
 
-    QTip::Rect _rect{};
     QTip::Font _font;
 
     float _fontHeight = 0;

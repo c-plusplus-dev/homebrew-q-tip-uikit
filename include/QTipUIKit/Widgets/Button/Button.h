@@ -56,7 +56,6 @@ private:
     ButtonStyle _style;
     ButtonState _state = ButtonState::Normal;
     std::string _text;
-    QTip::Rect _rect{};
     std::function<void()> _onClick;
 
     bool _disabled = false;
