@@ -75,6 +75,7 @@ bool Button::handleEvent(const SDL_Event& event) {
 }
 
 void Button::renderImpl(QTip::Window& window) {
+    window->setBlendMode(QTip::RenderBlendMode::Blend);
     switch (_state) {
     case ButtonState::Normal:
         window->setRenderColor(_style.color);
@@ -89,7 +90,6 @@ void Button::renderImpl(QTip::Window& window) {
         window->setRenderColor(_style.disabledColor);
         break;
     }
-    window->setBlendMode(QTip::RenderBlendMode::Blend);
     window->renderRoundedRect(_rect, 10);
     window->resetBlendMode();
 

@@ -53,6 +53,8 @@ add_library(QTipUIKit STATIC
         src/UIObject.cpp
         include/QTipUIKit/Widgets/BarChart/BarChart.tpp
         include/QTipUIKit/Widgets/BarChart/BarChart.h
+        src/Widgets/Button/MagickButton.cpp
+        include/QTipUIKit/Widgets/Button/MagickButton.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)
