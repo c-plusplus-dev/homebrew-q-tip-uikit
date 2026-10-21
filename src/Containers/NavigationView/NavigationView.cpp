@@ -183,6 +183,8 @@ void NavigationView::resize(QTip::Point size) {
 void NavigationView::reposition(QTip::Point position) {
     _rect.origin = position;
     _preferredRect.origin = position;
+
+    layout();
 }
 
 void NavigationView::setRect(QTip::Rect rect) {
@@ -246,6 +248,9 @@ void NavigationView::layout() {
         return;
     }
 
+    constexpr float padding = 8.0f;
+    constexpr float itemSpacing = 6.0f;
+
     const float width = _rect.size.x;
     const float height = _rect.size.y;
 
@@ -264,97 +269,102 @@ void NavigationView::layout() {
     switch (_position) {
     case NavigationPosition::Top:
         barRect = {
-            0.0f,
-            0.0f,
-            width,
+            padding,
+            padding,
+            width - padding * 2.0f,
             actualBarSize
         };
 
         viewRect = {
-            0.0f,
-            actualBarSize,
-            width,
-            height - actualBarSize
+            padding,
+            actualBarSize + padding * 2.0f,
+            std::max(0.0f, width - padding * 2.0f),
+            std::max(0.0f, height - actualBarSize - padding * 3.0f)
         };
         break;
 
     case NavigationPosition::Bottom:
-        viewRect = {
-            0.0f,
-            0.0f,
-            width,
-            height - actualBarSize
+        barRect = {
+            padding,
+            height - actualBarSize - padding,
+            width - padding * 2.0f,
+            actualBarSize
         };
 
-        barRect = {
-            0.0f,
-            height - actualBarSize,
-            width,
-            actualBarSize
+        viewRect = {
+            padding,
+            padding,
+            std::max(0.0f, width - padding * 2.0f),
+            std::max(0.0f, height - actualBarSize - padding * 3.0f)
         };
         break;
 
     case NavigationPosition::Left:
         barRect = {
-            0.0f,
-            0.0f,
+            padding,
+            padding,
             actualBarSize,
-            height
+            height - padding * 2.0f
         };
 
         viewRect = {
-            actualBarSize,
-            0.0f,
-            width - actualBarSize,
-            height
+            actualBarSize + padding * 2.0f,
+            padding,
+            std::max(0.0f, width - actualBarSize - padding * 3.0f),
+            std::max(0.0f, height - padding * 2.0f)
         };
         break;
 
     case NavigationPosition::Right:
-        viewRect = {
-            0.0f,
-            0.0f,
-            width - actualBarSize,
-            height
+        barRect = {
+            width - actualBarSize - padding,
+            padding,
+            actualBarSize,
+            height - padding * 2.0f
         };
 
-        barRect = {
-            width - actualBarSize,
-            0.0f,
-            actualBarSize,
-            height
+        viewRect = {
+            padding,
+            padding,
+            std::max(0.0f, width - actualBarSize - padding * 3.0f),
+            std::max(0.0f, height - padding * 2.0f)
         };
         break;
     }
 
-    if (View* view = selectedView()) {
-        view->setRect(viewRect);
+    for (auto& entry : _entries) {
+        entry.view->setRect(viewRect);
     }
 
     if (_entries.empty()) {
         return;
     }
 
-    const float itemCount =
-        static_cast<float>(_entries.size());
+    const float itemCount = static_cast<float>(_entries.size());
 
     for (std::size_t i = 0; i < _entries.size(); ++i) {
         QTip::Rect buttonRect = barRect;
 
         if (horizontal) {
-            const float itemWidth = barRect.size.x / itemCount;
+            const float itemWidth =
+                (barRect.size.x - itemSpacing * (itemCount - 1.0f))
+                / itemCount;
 
             buttonRect.origin.x =
-                static_cast<float>(i) * itemWidth;
+                barRect.origin.x +
+                static_cast<float>(i) * (itemWidth + itemSpacing);
 
-            buttonRect.size.x = itemWidth;
+            buttonRect.size.x = std::max(0.0f, itemWidth);
         } else {
-            const float itemHeight = barRect.size.y / itemCount;
+            const float itemHeight =
+                (barRect.size.y - itemSpacing * (itemCount - 1.0f))
+                / itemCount;
 
             buttonRect.origin.y =
-                static_cast<float>(i) * itemHeight;
+                barRect.origin.y +
+                static_cast<float>(i) * (itemHeight + itemSpacing);
 
-            buttonRect.size.y = itemHeight;
+            buttonRect.size.y = std::max(0.0f, itemHeight);
         }
 
         _entries[i].button->setRect(buttonRect);
