@@ -55,6 +55,10 @@ add_library(QTipUIKit STATIC
         include/QTipUIKit/Widgets/BarChart/BarChart.h
         src/Widgets/Button/MagickButton.cpp
         include/QTipUIKit/Widgets/Button/MagickButton.h
+        src/Containers/NavigationView/View.cpp
+        include/QTipUIKit/Containers/NavigationView/View.h
+        src/Containers/NavigationView/NavigationView.cpp
+        include/QTipUIKit/Containers/NavigationView/NavigationView.h
 )
 
 add_library(QTipUIKit::QTipUIKit ALIAS QTipUIKit)
