@@ -154,7 +154,7 @@ void PieChart<T>::renderImpl(QTip::Window& window) {
         auto alpha = static_cast<uint8_t>(255.0f * (static_cast<float>(item.expand) / 20.0f));
         if (_tooltipRenderer && !tooltipDrawn) {
             tooltipDrawn = true;
-            QTip::RenderTarget target(window.getRenderer(), 100, 100);
+            QTip::RenderTarget target(window, 100, 100);
             window->setTarget(target);
             _tooltipRenderer(
                 window,

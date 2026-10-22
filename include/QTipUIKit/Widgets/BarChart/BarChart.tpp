@@ -1091,7 +1091,7 @@ void BarChart<T>::renderImpl(QTip::Window& window) {
 
     renderer.resetClip();
 
-    QTip::RenderTarget target(renderer, 100, 100);
+    QTip::RenderTarget target(window, 100, 100);
     renderer.setTarget(target);
     if (_tooltip && _hoveredOn < _items.size()) {
         auto& item = _items[_hoveredOn];

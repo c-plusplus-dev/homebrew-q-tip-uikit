@@ -44,7 +44,7 @@ void Panel::initTarget() {
         return;
 
     target = std::make_unique<QTip::RenderTarget>(
-        _window->getRenderer(),
+        *_window,
         _rect.size
     );
 }

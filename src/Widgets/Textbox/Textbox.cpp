@@ -74,7 +74,7 @@ Textbox::~Textbox() {
 void Textbox::renderImpl(Window& window) {
     Renderer& renderer = window.getRenderer();
 
-    RenderTarget target(renderer, _rect.size);
+    RenderTarget target(window, _rect.size);
 
     renderer.setTarget(target);
 

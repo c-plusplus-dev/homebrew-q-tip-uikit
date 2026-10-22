@@ -237,7 +237,7 @@ void ScrollView::initTarget() {
         return;
 
     target = std::make_unique<QTip::RenderTarget>(
-        _window->getRenderer(),
+        *_window,
         _contentSize
     );
 }
