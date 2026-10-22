@@ -26,7 +26,7 @@ void NavigationView::select(View& view) {
     const auto it = std::ranges::find_if(
         _entries,
         [&view](const Entry& entry) {
-            return entry.view.get() == &view;
+            return entry.view == &view;
         }
     );
 
@@ -62,7 +62,7 @@ View* NavigationView::selectedView() const {
         return nullptr;
     }
 
-    return _entries[_selectedIndex].view.get();
+    return _entries[_selectedIndex].view;
 }
 
 std::size_t NavigationView::selectedIndex() const {
@@ -209,9 +209,8 @@ void NavigationView::tick(QTip::Clock& clock, double dt) {
 
 void NavigationView::renderImpl(QTip::Window& window) {
     initTarget();
-    initViewTarget();
 
-    if (!_target || !_viewTarget) {
+    if (!_target) {
         return;
     }
 
@@ -227,25 +226,8 @@ void NavigationView::renderImpl(QTip::Window& window) {
     window->resetBlendMode();
 
     // Only the selected view is rendered.
-    if (View* view = selectedView()) {
-        if (QTip::Rect* rect = selectedViewRect()) {
-            window->setTarget(*_viewTarget);
-            window->setBlendMode(QTip::RenderBlendMode::None);
-            window->setRenderColor(QTip::Color::clear);
-            window->renderRect({
-                0,
-                0,
-                _viewTarget->size()
-            });
-            window->resetBlendMode();
-            view->render(window);
-            window->resetTarget();
-            window->renderTexture(
-                *_viewTarget,
-                QTip::Rect::zero,
-                *rect
-            );
-        }
+    if (auto* entry = selectedEntry()) {
+        entry->panel->render(window);
     }
 
     // Render the navigation controls above the active view.
@@ -260,6 +242,13 @@ void NavigationView::renderImpl(QTip::Window& window) {
         QTip::Rect::zero,
         _rect
     );
+}
+
+NavigationView::Entry* NavigationView::selectedEntry() {
+    if (_entries.empty())
+        return nullptr;
+
+    return &_entries[_selectedIndex];
 }
 
 void NavigationView::layout() {
@@ -352,6 +341,7 @@ void NavigationView::layout() {
     }
 
     for (auto& entry : _entries) {
+        entry.panel->setRect(viewRect);
         entry.view->setRect({0, 0, viewRect.size});
         entry.viewRect = viewRect;
     }
@@ -389,26 +379,4 @@ void NavigationView::layout() {
 
         _entries[i].button->setRect(buttonRect);
     }
-}
-
-void NavigationView::initViewTarget() {
-    if (!_window)
-        return;
-
-    auto* viewRect = selectedViewRect();
-    if (!viewRect)
-        return;
-
-    if (_viewTarget && _viewTarget->size() == viewRect->size)
-        return;
-
-    _viewTarget = std::make_unique<QTip::RenderTarget>(*_window, viewRect->size);
-}
-
-QTip::Rect* NavigationView::selectedViewRect() {
-    if (_entries.empty()) {
-        return nullptr;
-    }
-
-    return &_entries[_selectedIndex].viewRect;
 }

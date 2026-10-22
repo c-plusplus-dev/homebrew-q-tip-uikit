@@ -41,12 +41,13 @@ public:
             std::invoke_result_t<Factory&>,
             std::unique_ptr<V>
         > &&
-        std::constructible_from<B, QTip::Rect, ButtonArgs...>
+        std::constructible_from<B, QTip::Rect, ButtonArgs...> &&
+        std::movable<V>
     V& addView(
         Factory&& factory,
         ButtonArgs&&... buttonArgs
     ) {
-        auto view = std::invoke(
+        auto v = std::invoke(
             std::forward<Factory>(factory)
         );
 
@@ -55,7 +56,7 @@ public:
             std::forward<ButtonArgs>(buttonArgs)...
         );
 
-        V* viewResult = view.get();
+        V* viewResult = v.get();
 
         button->setOnClick(
             [this, viewResult] {
@@ -63,16 +64,21 @@ public:
             }
         );
 
+        auto panel = Panel{{}};
+
+        auto& view = panel.add<V>(std::move(v));
+
         Entry entry{
             std::move(button),
-            std::move(view),
+            std::move(panel),
+            &view,
             {}
         };
 
         _entries.push_back(std::move(entry));
 
         _entries.back().button->parent = this;
-        _entries.back().view->parent = this;
+        _entries.back().panel->parent = this;
 
         if (_entries.size() == 1) {
             _selectedIndex = 0;
@@ -124,23 +130,21 @@ protected:
 private:
     struct Entry {
         std::unique_ptr<Button> button;
-        std::unique_ptr<View> view;
+        std::unique_ptr<Panel> panel;
+        View* view;
         QTip::Rect viewRect;
     };
 
     std::vector<Entry> _entries;
-
-    std::unique_ptr<QTip::RenderTarget> _viewTarget;
 
     NavigationPosition _position;
     float _barSize;
 
     std::size_t _selectedIndex = 0;
 
-    void layout();
-    void initViewTarget();
+    Entry* selectedEntry();
 
-    QTip::Rect* selectedViewRect();
+    void layout();
 };
 
 #endif // QTIPUIKIT_NAVIGATIONVIEW_H
