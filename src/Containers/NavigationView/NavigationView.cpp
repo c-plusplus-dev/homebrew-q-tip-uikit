@@ -209,8 +209,9 @@ void NavigationView::tick(QTip::Clock& clock, double dt) {
 
 void NavigationView::renderImpl(QTip::Window& window) {
     initTarget();
+    initViewTarget();
 
-    if (!_target) {
+    if (!_target || !_viewTarget) {
         return;
     }
 
@@ -355,8 +356,6 @@ void NavigationView::layout() {
         entry.viewRect = viewRect;
     }
 
-    _viewTarget = std::make_unique<QTip::RenderTarget>(*_window, viewRect.size);
-
     if (_entries.empty()) {
         return;
     }
@@ -390,6 +389,20 @@ void NavigationView::layout() {
 
         _entries[i].button->setRect(buttonRect);
     }
+}
+
+void NavigationView::initViewTarget() {
+    if (!_window)
+        return;
+
+    auto* viewRect = selectedViewRect();
+    if (!viewRect)
+        return;
+
+    if (_viewTarget && _viewTarget->size() == viewRect->size)
+        return;
+
+    _viewTarget = std::make_unique<QTip::RenderTarget>(*_window, viewRect->size);
 }
 
 QTip::Rect* NavigationView::selectedViewRect() {

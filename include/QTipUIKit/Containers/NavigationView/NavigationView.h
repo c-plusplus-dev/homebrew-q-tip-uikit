@@ -138,6 +138,7 @@ private:
     std::size_t _selectedIndex = 0;
 
     void layout();
+    void initViewTarget();
 
     QTip::Rect* selectedViewRect();
 };
