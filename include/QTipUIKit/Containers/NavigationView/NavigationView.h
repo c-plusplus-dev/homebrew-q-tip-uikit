@@ -63,9 +63,9 @@ public:
             }
         );
 
-        auto panel = Panel{{}};
+        auto panel = std::make_unique<Panel>(QTip::Rect{});
 
-        auto& view = panel.add<V>(std::move(v));
+        auto& view = panel->add<V>(std::move(v));
 
         Entry entry{
             std::move(button),
