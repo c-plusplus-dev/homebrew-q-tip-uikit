@@ -6,6 +6,7 @@
 #define QTIP_UIOBJECT_H
 
 #include <Q-Tip/Clock.h>
+#include <Q-Tip/Graphics/RenderTarget.h>
 #include <Q-Tip/Window/Window.h>
 #include <Q-Tip/Mods/ModLoader/ModLoader.h>
 

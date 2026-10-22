@@ -20,7 +20,7 @@ Panel::~Panel() = default;
 void Panel::renderImpl(QTip::Window& window) {
     initTarget();
 
-    window->setTarget(*target);
+    window->setTarget(*_target);
 
     window->setBlendMode(QTip::RenderBlendMode::None);
     window->setRenderColor(QTip::Color::clear);
@@ -33,17 +33,17 @@ void Panel::renderImpl(QTip::Window& window) {
 
     window->resetTarget();
 
-    window->renderTexture(*target, QTip::Rect::zero, _rect);
+    window->renderTexture(*_target, QTip::Rect::zero, _rect);
 }
 
 void Panel::initTarget() {
     if (!_window)
         return;
 
-    if (target && target->size() == _rect.size)
+    if (_target && _target->size() == _rect.size)
         return;
 
-    target = std::make_unique<QTip::RenderTarget>(
+    _target = std::make_unique<QTip::RenderTarget>(
         *_window,
         _rect.size
     );

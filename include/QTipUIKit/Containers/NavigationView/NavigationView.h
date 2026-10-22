@@ -65,7 +65,8 @@ public:
 
         Entry entry{
             std::move(button),
-            std::move(view)
+            std::move(view),
+            {}
         };
 
         _entries.push_back(std::move(entry));
@@ -124,9 +125,12 @@ private:
     struct Entry {
         std::unique_ptr<Button> button;
         std::unique_ptr<View> view;
+        QTip::Rect viewRect;
     };
 
     std::vector<Entry> _entries;
+
+    std::unique_ptr<QTip::RenderTarget> _viewTarget;
 
     NavigationPosition _position;
     float _barSize;
@@ -134,6 +138,8 @@ private:
     std::size_t _selectedIndex = 0;
 
     void layout();
+
+    QTip::Rect* selectedViewRect();
 };
 
 #endif // QTIPUIKIT_NAVIGATIONVIEW_H

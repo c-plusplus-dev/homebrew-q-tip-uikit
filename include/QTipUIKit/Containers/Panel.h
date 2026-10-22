@@ -49,7 +49,7 @@ public:
 protected:
     std::vector<std::unique_ptr<UIObject>> _objects;
 
-    std::unique_ptr<QTip::RenderTarget> target;
+    std::unique_ptr<QTip::RenderTarget> _target;
 
     std::vector<UIObject*> _sortedObjects() const;
 
