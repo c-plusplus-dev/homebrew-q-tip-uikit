@@ -32,6 +32,18 @@ public:
         return *result;
     }
 
+    template<std::derived_from<UIObject> T>
+    T& add(std::unique_ptr<T> object) {
+        T* result = object.get();
+        _objects.push_back(std::move(object));
+
+        result->parent = this;
+
+        onAddObject(result);
+
+        return *result;
+    }
+
     virtual void remove(UIObject& object);
 
     virtual void clear();

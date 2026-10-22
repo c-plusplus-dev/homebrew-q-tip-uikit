@@ -41,8 +41,7 @@ public:
             std::invoke_result_t<Factory&>,
             std::unique_ptr<V>
         > &&
-        std::constructible_from<B, QTip::Rect, ButtonArgs...> &&
-        std::movable<V>
+        std::constructible_from<B, QTip::Rect, ButtonArgs...>
     V& addView(
         Factory&& factory,
         ButtonArgs&&... buttonArgs
