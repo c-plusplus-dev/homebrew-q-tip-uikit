@@ -6,7 +6,9 @@
 
 #include <iostream>
 #include <magic_enum/magic_enum.hpp>
+#include <Q-Tip/Window/Window.h>
 #include <SDL3/SDL_events.h>
+#include <SDL3/SDL_render.h>
 
 namespace Detail {
     SDL_Event transformEvent(const SDL_Event& event, const QTip::Point& position) {
@@ -142,5 +144,75 @@ namespace Detail {
         char buffer[256]{};
         SDL_GetEventDescription(&event, buffer, sizeof(buffer));
         return buffer;
+    }
+
+    bool pointInTriangle(float px, float py, const QTip::Point& v0, const QTip::Point& v1, const QTip::Point& v2) {
+        float x0 = v0.x, y0 = v0.y;
+        float x1 = v1.x, y1 = v1.y;
+        float x2 = v2.x, y2 = v2.y;
+
+        float dX = px - x2;
+        float dY = py - y2;
+        float dX21 = x2 - x1;
+        float dY12 = y1 - y2;
+        float D = dY12*(x0 - x2) + dX21*(y0 - y2);
+        float s = dY12*dX + dX21*dY;
+        float t = (y2 - y0)*dX + (x0 - x2)*dY;
+
+        if (D < 0) return (s <= 0) && (t <= 0) && (s + t >= D);
+        return (s >= 0) && (t >= 0) && (s + t <= D);
+    }
+
+    bool pointInVB(float px, float py, const std::vector<QTip::Point>& vb) {
+        if (vb.size() < 3) return false; // need at least one triangle
+
+        // Triangle fan: first vertex is center
+        for (size_t i = 1; i < vb.size() - 1; ++i) {
+            if (pointInTriangle(px, py, vb[0], vb[i], vb[i + 1])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    double drawPieSlice(QTip::Window& window, std::vector<QTip::Point>* vb, float cx, float cy, float radius, double percent, QTip::Color color, double startAngle) {
+        if (percent <= 0.0) return startAngle;
+        if (percent > 1.0) percent = 1.0;  // clamp
+
+        constexpr int segments = 30;  // increase for smoother slices
+        double endAngle = startAngle + 2.0 * M_PI * percent;
+
+        std::vector<QTip::Point> vertices;
+        std::vector<int> indices;
+
+        // Center point
+        QTip::Point center{};
+        center.x = cx;
+        center.y = cy;
+        vertices.push_back(center);
+
+        // Arc points
+        for (int i = 0; i <= segments; ++i) {
+            double theta = startAngle + (endAngle - startAngle) * i / segments;
+            QTip::Point v{};
+            v.x = static_cast<float>(cx + radius * cos(theta));
+            v.y = static_cast<float>(cy + radius * sin(theta));
+            vertices.push_back(v);
+        }
+
+        // Triangle fan indices
+        for (int i = 1; i < static_cast<int>(vertices.size()) - 1; ++i) {
+            indices.push_back(0);
+            indices.push_back(i);
+            indices.push_back(i + 1);
+        }
+
+        window->setRenderColor(color);
+        window->renderPolygon(QTip::Polygon{vertices});
+
+        if (vb)
+            *vb = vertices;
+
+        return endAngle;  // return the angle where the next slice should start
     }
 }

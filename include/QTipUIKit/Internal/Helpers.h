@@ -8,10 +8,17 @@
 #include <Q-Tip/Graphics/Color.h>
 #include <Q-Tip/Math/Point.h>
 #include <SDL3/SDL_events.h>
+
+namespace QTip {
+    class Window;
+}
+
 namespace fs = std::filesystem;
 
 union SDL_Event;
 struct SDL_FColor;
+struct SDL_Renderer;
+struct SDL_Vertex;
 
 namespace Detail {
     inline fs::path defaultFontPath() {
@@ -90,9 +97,26 @@ namespace Detail {
         };
     }
 
+    inline std::string fmt(const char* fmt_str, ...) {
+        char buf[256];  // temporary stack buffer
+
+        va_list args;
+        va_start(args, fmt_str);
+        vsnprintf(buf, sizeof(buf), fmt_str, args);
+        va_end(args);
+
+        return {buf};  // copy into std::string
+    }
+
     SDL_FColor toFColor(QTip::Color color);
 
     std::string eventName(const SDL_Event& event);
+
+    bool pointInTriangle(float px, float py, const QTip::Point& v0, const QTip::Point& v1, const QTip::Point& v2);
+
+    bool pointInVB(float px, float py, const std::vector<QTip::Point>& vb);
+
+    double drawPieSlice(QTip::Window& window, std::vector<QTip::Point>* vb, float cx, float cy, float radius, double percent, QTip::Color color, double startAngle = -M_PI_2);
 }
 
 static bool operator<(const QTip::Point& lhs, const QTip::Point& rhs) {

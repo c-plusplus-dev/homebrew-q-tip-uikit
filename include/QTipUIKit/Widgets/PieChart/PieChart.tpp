@@ -4,7 +4,6 @@
 
 #ifndef QTIPUIKIT_PIECHART_TPP
 #define QTIPUIKIT_PIECHART_TPP
-#include "../../../../src/include/Helpers.h"
 #include "QTipUIKit/Internal/Helpers.h"
 
 // in each constructor init the _items list with item, value and label and calculate total.
@@ -46,7 +45,7 @@ PieChart<T>::PieChart(QTip::Rect rect, std::vector<PieChartItem<T>> items, bool 
 }
 
 template <typename T>
-void PieChart<T>::setData(vector<T> items) requires PieChartConvertible<T> {
+void PieChart<T>::setData(std::vector<T> items) requires PieChartConvertible<T> {
     _items.clear();
     _items.reserve(items.size());
     _total = 0;
@@ -67,7 +66,7 @@ void PieChart<T>::setData(vector<T> items) requires PieChartConvertible<T> {
 }
 
 template <typename T>
-void PieChart<T>::setData(vector<T> items, Formatters formatters) {
+void PieChart<T>::setData(std::vector<T> items, Formatters formatters) {
     _items.clear();
     _items.reserve(items.size()); // same, reserve
     _total = 0;
@@ -86,7 +85,7 @@ void PieChart<T>::setData(vector<T> items, Formatters formatters) {
 }
 
 template <typename T>
-void PieChart<T>::setData(vector<PieChartItem<T>> items) {
+void PieChart<T>::setData(std::vector<PieChartItem<T>> items) {
     // here we can just init it by moving over because the user has given us label and value themselves
     _items.clear();
     _items.reserve(items.size());
@@ -139,13 +138,13 @@ void PieChart<T>::renderImpl(QTip::Window& window) {
     bool tooltipDrawn = false;
     for (int i = 0; i < _items.size(); i++) {
         auto& item = _items[i];
-        startAngle = DrawPieSlice(
-            window.getRenderer(),
+        startAngle = Detail::drawPieSlice(
+            window,
             &item.vb,
             cx, cy,
             radius + item.expand / 2.0f,
             item.animatedPercent,
-            Detail::toFColor(item.color),
+            item.color,
             startAngle
         );
     }
@@ -171,7 +170,7 @@ void PieChart<T>::renderImpl(QTip::Window& window) {
             tooltipDrawn = true;
             QTip::Color color = {255, 255, 255, alpha};
             window->renderText(font, item.label.c_str(), mouseX, mouseY, color);
-            window->renderText(font, fmt("%.1f%%", item.percent * 100).c_str(), mouseX, mouseY + 16, color);
+            window->renderText(font, Detail::fmt("%.1f%%", item.percent * 100).c_str(), mouseX, mouseY + 16, color);
         }
     }
 }
@@ -185,7 +184,7 @@ bool PieChart<T>::handleEvent(const SDL_Event& event) {
             _hoveredOn = -1;
             for (int i = 0; i < _items.size(); i++) {
                 auto& item = _items[i];
-                if (PointInVB(event.motion.x, event.motion.y, item.vb)) {
+                if (Detail::pointInVB(event.motion.x, event.motion.y, item.vb)) {
                     _hoveredOn = i;
                 }
             }

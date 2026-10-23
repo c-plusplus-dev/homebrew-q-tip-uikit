@@ -39,7 +39,7 @@ class PieChart : public UIObject {
         bool colorValid = false;
         float expand = 0;
         double animatedPercent = 0;
-        std::vector<SDL_Vertex> vb;
+        std::vector<QTip::Point> vb;
     };
 
     static constexpr bool isColorConvertible =
