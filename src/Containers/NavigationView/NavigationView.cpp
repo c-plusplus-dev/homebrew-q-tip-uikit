@@ -103,8 +103,8 @@ bool NavigationView::handleEvent(const SDL_Event& event) {
         }
     }
 
-    if (View* view = selectedView()) {
-        if (!view->handleEvent(localEvent)) {
+    if (auto* entry = selectedEntry()) {
+        if (!entry->panel->handleEvent(event)) {
             return false;
         }
     }
