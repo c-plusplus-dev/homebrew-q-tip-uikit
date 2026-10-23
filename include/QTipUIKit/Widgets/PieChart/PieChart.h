@@ -5,6 +5,7 @@
 #ifndef QTIPUIKIT_PIECHART_H
 #define QTIPUIKIT_PIECHART_H
 #include "QTipUIKit/UIObject.h"
+#include "QTipUIKit/Internal/Helpers.h"
 
 struct SDL_Vertex;
 
