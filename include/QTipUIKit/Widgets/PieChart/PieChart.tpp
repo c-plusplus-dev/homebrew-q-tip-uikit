@@ -130,7 +130,6 @@ void PieChart<T>::renderImpl(QTip::Window& window) {
     auto [cx, cy] = _rect.center();
     if (_tooltip) {
         cx -= 10;
-        cx -= 10;
     }
 
     auto mouseX = mousePosition.x + 10;
