@@ -55,7 +55,7 @@ public:
     void setRect(QTip::Rect rect) override;
     const QTip::Rect& rect() override;
 
-private:
+protected:
     void clampScrollPosition();
 
     void updateScrollBars();
@@ -72,7 +72,6 @@ private:
     ScrollBar* _horizontalScrollBar = nullptr;
     ScrollBar* _verticalScrollBar = nullptr;
 
-protected:
     void renderImpl(QTip::Window& window) override;
 
     void initTarget() override;
