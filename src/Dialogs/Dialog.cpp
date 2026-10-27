@@ -10,6 +10,8 @@
 
 Dialog::Dialog() : UIObject(NoRegTag{}), _content({}), _buttons({}), _lastWindowSize() { // dont reg in global
     _buttons.setSizing(Sizing::Stretch);
+    _content.parent = this;
+    _buttons.parent = this;
 }
 
 Dialog::~Dialog() = default;

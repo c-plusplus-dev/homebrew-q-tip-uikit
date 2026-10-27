@@ -5,7 +5,7 @@
 
 #include <SDL3/SDL_events.h>
 
-#include <Q-Tip/Graphics/RenderTarget.h>
+#include <Q-Tip/Graphics/RenderTexture.h>
 
 #include "QTipUIKit/Internal/Helpers.h"
 

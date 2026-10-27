@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "Q-Tip/Graphics/RenderTarget.h"
+#include "Q-Tip/Graphics/RenderTexture.h"
 
 #include <SDL3/SDL.h>
 
@@ -74,7 +74,7 @@ Textbox::~Textbox() {
 void Textbox::renderImpl(Window& window) {
     Renderer& renderer = window.getRenderer();
 
-    RenderTarget target(window, _rect.size);
+    RenderTexture target(window, _rect.size);
 
     renderer.setTarget(target);
 

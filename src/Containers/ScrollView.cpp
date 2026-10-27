@@ -236,7 +236,7 @@ void ScrollView::initTarget() {
     if (_target && _target->size() == _contentSize)
         return;
 
-    _target = std::make_unique<QTip::RenderTarget>(
+    _target = std::make_unique<QTip::RenderTexture>(
         *_window,
         _contentSize
     );

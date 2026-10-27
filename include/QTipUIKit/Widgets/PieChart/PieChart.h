@@ -120,6 +120,7 @@ private:
     bool _tooltip = false;
 
     TooltipRenderer _tooltipRenderer;
+    std::unique_ptr<QTip::RenderTexture> _tooltipTexture;
 
     QTip::Font font{Detail::defaultFontPath(), 16};
     QTip::Point mousePosition;

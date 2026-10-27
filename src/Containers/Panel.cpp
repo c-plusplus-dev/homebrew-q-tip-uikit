@@ -4,7 +4,7 @@
 
 #include "QTipUIKit/Containers/Panel.h"
 
-#include <Q-Tip/Graphics/RenderTarget.h>
+#include <Q-Tip/Graphics/RenderTexture.h>
 #include <SDL3/SDL_events.h>
 
 #include "QTipUIKit/UIKitMod.h"
@@ -43,7 +43,7 @@ void Panel::initTarget() {
     if (_target && _target->size() == _rect.size)
         return;
 
-    _target = std::make_unique<QTip::RenderTarget>(
+    _target = std::make_unique<QTip::RenderTexture>(
         *_window,
         _rect.size
     );

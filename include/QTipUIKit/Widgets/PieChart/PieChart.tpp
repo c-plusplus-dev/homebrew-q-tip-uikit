@@ -5,6 +5,7 @@
 #ifndef QTIPUIKIT_PIECHART_TPP
 #define QTIPUIKIT_PIECHART_TPP
 #include "QTipUIKit/Internal/Helpers.h"
+#include <Q-Tip/Graphics/RenderTexture.h>
 
 // in each constructor init the _items list with item, value and label and calculate total.
 // then call init to do repetitive code like setting percent.
@@ -119,6 +120,13 @@ T* PieChart<T>::hoveredItem() const {
 
 template <typename T>
 void PieChart<T>::renderImpl(QTip::Window& window) {
+    if (_tooltip && !_tooltipTexture) {
+        _tooltipTexture = std::make_unique<QTip::RenderTexture>(
+            window,
+            200, 200
+        );
+    }
+
     double startAngle = -M_PI_2;
 
     auto [width, height] = _rect.size;
@@ -152,8 +160,9 @@ void PieChart<T>::renderImpl(QTip::Window& window) {
         auto alpha = static_cast<uint8_t>(255.0f * (static_cast<float>(item.expand) / 20.0f));
         if (_tooltipRenderer && !tooltipDrawn) {
             tooltipDrawn = true;
-            QTip::RenderTarget target(window, 100, 100);
-            window->setTarget(target);
+            window->setTarget(*_tooltipTexture);
+            window->setRenderColor(QTip::Color::clear);
+            window->renderRect({0, 0, 200, 200});
             _tooltipRenderer(
                 window,
                 font,
@@ -163,7 +172,7 @@ void PieChart<T>::renderImpl(QTip::Window& window) {
                 alpha
             );
             window->resetTarget();
-            window->renderTexture(target, QTip::Rect::zero, QTip::Rect{mouseX, mouseY, 100, 100});
+            window->renderTexture(*_tooltipTexture, QTip::Rect::zero, QTip::Rect{mouseX, mouseY, 200, 200});
         }
         else if (!tooltipDrawn) {
             tooltipDrawn = true;

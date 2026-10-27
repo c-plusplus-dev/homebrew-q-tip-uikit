@@ -5,7 +5,7 @@
 #ifndef QTIPUIKIT_SCROLLVIEW_H
 #define QTIPUIKIT_SCROLLVIEW_H
 
-#include <Q-Tip/Graphics/RenderTarget.h>
+#include <Q-Tip/Graphics/RenderTexture.h>
 
 #include "QTipUIKit/Containers/Panel.h"
 #include "QTipUIKit/Widgets/ScrollBar/ScrollBar.h"
