@@ -29,6 +29,8 @@ add_library(QTipUIKit STATIC
         src/Widgets/Checkbox/Checkbox.cpp
         src/Widgets/Label/Label.cpp
         include/QTipUIKit/Widgets/Label/Label.h
+        src/Widgets/ProgressBar/ProgressBar.cpp
+        include/QTipUIKit/Widgets/ProgressBar/ProgressBar.h
         src/Containers/Panel.cpp
         include/QTipUIKit/Containers/Panel.h
         src/Internal/Helpers.cpp
