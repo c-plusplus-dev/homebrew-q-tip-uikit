@@ -5,7 +5,6 @@
 #include "QTipUIKit/Containers/Panel.h"
 
 #include <Q-Tip/Graphics/RenderTexture.h>
-#include <SDL3/SDL_events.h>
 
 #include "QTipUIKit/UIKitMod.h"
 #include "QTipUIKit/Internal/Helpers.h"
@@ -49,8 +48,8 @@ void Panel::initTarget() {
     );
 }
 
-bool Panel::handleEvent(const SDL_Event& event) {
-    const SDL_Event localEvent =
+bool Panel::handleEvent(const QTip::Event& event) {
+    const QTip::Event localEvent =
         Detail::transformEvent(event, _rect.origin);
 
     for (const auto& object : _sortedObjects()) {

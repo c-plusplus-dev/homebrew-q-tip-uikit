@@ -4,8 +4,6 @@
 
 #include "QTipUIKit/Widgets/Button/Button.h"
 
-#include <SDL3/SDL_events.h>
-
 #include <utility>
 
 Button::Button(float x, float y, float width, float height, std::string_view text, const ButtonStyle& style) {
@@ -22,7 +20,7 @@ Button::Button(QTip::Rect rect, std::string_view text, const ButtonStyle& style)
     _text = std::string(text);
 }
 
-bool Button::handleEvent(const SDL_Event& event) {
+bool Button::handleEvent(const QTip::Event& event) {
     if (_disabled) {
         _state = ButtonState::Disabled;
         auto position = Detail::eventPosition(event);
@@ -34,19 +32,19 @@ bool Button::handleEvent(const SDL_Event& event) {
     switch (event.type) {
     default:
         break;
-    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+    case QTip::EventType::MouseButtonPressed:
         if (_rect.isPointInside({
-            event.button.x,
-            event.button.y
+            event.mouseButton.position.x,
+            event.mouseButton.position.y
         })) {
             _state = ButtonState::Pressed;
         }
         break;
-    case SDL_EVENT_MOUSE_BUTTON_UP:
+    case QTip::EventType::MouseButtonReleased:
         if (_state == ButtonState::Pressed) {
             if (_rect.isPointInside({
-                event.button.x,
-                event.button.y
+                event.mouseButton.position.x,
+                event.mouseButton.position.y
             })) {
                 if (_onClick) _onClick();
                 _state = ButtonState::Hovered;
@@ -54,10 +52,10 @@ bool Button::handleEvent(const SDL_Event& event) {
                 _state = ButtonState::Normal;
         }
         break;
-    case SDL_EVENT_MOUSE_MOTION: {
+    case QTip::EventType::MouseMoved: {
         if (_rect.isPointInside({
-            event.motion.x,
-            event.motion.y
+            event.mouseMove.position.x,
+            event.mouseMove.position.y
         })) {
             if (_state != ButtonState::Pressed)
                 _state = ButtonState::Hovered;

@@ -31,7 +31,7 @@ public:
 
     void shutdown() override;
 
-    void handleEvent(const SDL_Event& event) override;
+    void handleEvent(const QTip::Event& event) override;
 
     void beforePresent(QTip::Window& window) override;
 

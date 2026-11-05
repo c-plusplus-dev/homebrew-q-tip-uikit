@@ -4,8 +4,6 @@
 
 #include "QTipUIKit/Widgets/Checkbox/Checkbox.h"
 
-#include <SDL3/SDL_events.h>
-
 Checkbox::Checkbox(float x, float y, float width, float height, const CheckboxStyle& style) {
     _style = style;
     _rect = QTip::Rect{x, y, width, height};
@@ -18,7 +16,7 @@ Checkbox::Checkbox(QTip::Rect rect, const CheckboxStyle& style) {
     checked = false;
 }
 
-bool Checkbox::handleEvent(const SDL_Event& event) {
+bool Checkbox::handleEvent(const QTip::Event& event) {
     if (_disabled) {
         _state = CheckboxState::Disabled;
         auto position = Detail::eventPosition(event);
@@ -30,19 +28,19 @@ bool Checkbox::handleEvent(const SDL_Event& event) {
     switch (event.type) {
     default:
         break;
-    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+    case QTip::EventType::MouseButtonPressed:
         if (_rect.isPointInside({
-            event.button.x,
-            event.button.y
+            event.mouseButton.position.x,
+            event.mouseButton.position.y
         })) {
             _state = CheckboxState::Pressed;
         }
         break;
-    case SDL_EVENT_MOUSE_BUTTON_UP:
+    case QTip::EventType::MouseButtonReleased:
         if (_state == CheckboxState::Pressed) {
             if (_rect.isPointInside({
-                event.button.x,
-                event.button.y
+                event.mouseButton.position.x,
+                event.mouseButton.position.y
             })) {
                 checked = !checked;
                 _state = CheckboxState::Hovered;
@@ -50,10 +48,10 @@ bool Checkbox::handleEvent(const SDL_Event& event) {
                 _state = CheckboxState::Normal;
         }
         break;
-    case SDL_EVENT_MOUSE_MOTION:
+    case QTip::EventType::MouseMoved:
         if (_rect.isPointInside({
-            event.motion.x,
-            event.motion.y
+            event.mouseMove.position.x,
+            event.mouseMove.position.y
         })) {
             if (_state != CheckboxState::Pressed)
                 _state = CheckboxState::Hovered;

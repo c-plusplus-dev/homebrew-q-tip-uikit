@@ -46,7 +46,7 @@ public:
     size_t selectedIndex() const;
     const T* selectedItem() const;
 
-    bool handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const QTip::Event& event) override;
 
     void resize(QTip::Point size) override;
     void reposition(QTip::Point position) override;

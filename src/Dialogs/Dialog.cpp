@@ -4,8 +4,6 @@
 
 #include "QTipUIKit/Dialogs/Dialog.h"
 
-#include <SDL3/SDL_events.h>
-
 #include "QTipUIKit/UIKitMod.h"
 
 Dialog::Dialog() : UIObject(NoRegTag{}), _content({}), _buttons({}), _lastWindowSize() { // dont reg in global
@@ -36,7 +34,7 @@ void Dialog::renderImpl(QTip::Window& window) {
     _buttons.render(window);
 }
 
-bool Dialog::handleEvent(const SDL_Event& event) {
+bool Dialog::handleEvent(const QTip::Event& event) {
     _content.handleEvent(event);
     _buttons.handleEvent(event);
 

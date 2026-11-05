@@ -184,15 +184,15 @@ void PieChart<T>::renderImpl(QTip::Window& window) {
 }
 
 template <typename T>
-bool PieChart<T>::handleEvent(const SDL_Event& event) {
+bool PieChart<T>::handleEvent(const QTip::Event& event) {
     switch (event.type) {
-    case SDL_EVENT_MOUSE_MOTION: {
-        mousePosition = {event.motion.x, event.motion.y};
+    case QTip::EventType::MouseMoved: {
+        mousePosition = {event.mouseMove.position.x, event.mouseMove.position.y};
         if (_tooltip) {
             _hoveredOn = -1;
             for (int i = 0; i < _items.size(); i++) {
                 auto& item = _items[i];
-                if (Detail::pointInVB(event.motion.x, event.motion.y, item.vb)) {
+                if (Detail::pointInVB(event.mouseMove.position.x, event.mouseMove.position.y, item.vb)) {
                     _hoveredOn = i;
                 }
             }

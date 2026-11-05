@@ -107,7 +107,7 @@ public:
 
     [[nodiscard]] float barSize() const;
 
-    bool handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const QTip::Event& event) override;
 
     [[nodiscard]] QTip::Point minimumSize() const override;
 

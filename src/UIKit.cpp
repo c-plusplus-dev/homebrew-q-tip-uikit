@@ -32,8 +32,8 @@ void UIKitMod::init() {
 void UIKitMod::shutdown() {
 }
 
-void UIKitMod::handleEvent(const SDL_Event& event) {
-    SDL_Window* windowID = SDL_GetWindowFromEvent(&event);
+void UIKitMod::handleEvent(const QTip::Event& event) {
+    SDL_Window* windowID = SDL_GetWindowFromID(event.windowID);
     auto windows = QTip::QTipRuntime::windows();
     auto it = std::ranges::find_if(windows, [&] (const auto& window) {
         return static_cast<SDL_Window*>(*window) == windowID;

@@ -14,7 +14,7 @@ public:
 
     ~Panel() override;
 
-    bool handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const QTip::Event& event) override;
 
     template<std::derived_from<UIObject> T, typename... Args>
     T& add(Args&&... args) {

@@ -32,7 +32,7 @@ public:
     Button(float x, float y, float width, float height, std::string_view text, const ButtonStyle& style);
     Button(QTip::Rect rect, std::string_view text, const ButtonStyle& style);
 
-    bool handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const QTip::Event& event) override;
 
     void setText(std::string text);
     [[nodiscard]] const std::string& text() const;

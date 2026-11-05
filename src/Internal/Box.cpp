@@ -19,7 +19,7 @@ void Box::renderImpl(QTip::Window& window) {
     Panel::renderImpl(window);
 }
 
-bool Box::handleEvent(const SDL_Event& event) {
+bool Box::handleEvent(const QTip::Event& event) {
     return Panel::handleEvent(event);
 }
 

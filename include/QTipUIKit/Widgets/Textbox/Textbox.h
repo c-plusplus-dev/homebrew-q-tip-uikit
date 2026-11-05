@@ -13,7 +13,6 @@
 #include <Q-Tip/Types/Lazy.h>
 #include <Q-Tip/Graphics/Font.h>
 #include <Q-Tip/Graphics/Shapes/Rect.h>
-#include <Q-Tip/Window/Window.h>
 
 struct SDL_Cursor;
 
@@ -26,7 +25,7 @@ public:
 
     ~Textbox() override;
 
-    bool handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const QTip::Event& event) override;
 
     void setActive(bool active);
     [[nodiscard]] bool getActive() const;

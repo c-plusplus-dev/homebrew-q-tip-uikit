@@ -103,20 +103,20 @@ void Dropdown<T>::renderImpl(QTip::Window& window) {
 }
 
 template <typename T>
-bool Dropdown<T>::handleEvent(const SDL_Event& event) {
+bool Dropdown<T>::handleEvent(const QTip::Event& event) {
     if (_active) {
         if (!_itemsView.handleEvent(event))
             return false;
     }
 
     switch (event.type) {
-        case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-            if (event.button.button != SDL_BUTTON_LEFT)
+        case QTip::EventType::MouseButtonPressed: {
+            if (event.mouseButton.button != QTip::Left)
                 break;
 
             if (_rect.isPointInside({
-                event.button.x,
-                event.button.y
+                event.mouseButton.position.x,
+                event.mouseButton.position.y
             })) {
                 _active = !_active;
                 return false;

@@ -11,7 +11,6 @@
 #include <Q-Tip/Mods/ModLoader/ModLoader.h>
 
 class UIContext;
-union SDL_Event;
 struct SDL_Window;
 
 class UIObject {
@@ -35,7 +34,7 @@ public:
     }
 
     // returns true to continue propagating, false if consumed
-    virtual bool handleEvent(const SDL_Event& event) {return true;}
+    virtual bool handleEvent(const QTip::Event& event) {return true;}
 
     [[nodiscard]] virtual QTip::Point minimumSize() const = 0;
     [[nodiscard]] virtual QTip::Point preferredSize() const = 0;

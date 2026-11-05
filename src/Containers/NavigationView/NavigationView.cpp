@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include <SDL3/SDL_events.h>
-
 #include <Q-Tip/Graphics/RenderTexture.h>
 
 #include "QTipUIKit/Internal/Helpers.h"
@@ -91,8 +89,8 @@ float NavigationView::barSize() const {
     return _barSize;
 }
 
-bool NavigationView::handleEvent(const SDL_Event& event) {
-    const SDL_Event localEvent =
+bool NavigationView::handleEvent(const QTip::Event& event) {
+    const QTip::Event localEvent =
         Detail::transformEvent(event, _rect.origin);
 
     // Dispatch to the buttons first, so navigation interactions

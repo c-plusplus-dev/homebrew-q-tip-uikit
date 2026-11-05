@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <cstddef>
 #include <cstdint>
 #include <iomanip>
 #include <limits>
@@ -15,8 +14,6 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
-
-#include <SDL3/SDL_events.h>
 
 namespace Detail {
 
@@ -420,31 +417,31 @@ T* BarChart<T>::hoveredItem() const {
 }
 
 template <typename T>
-bool BarChart<T>::handleEvent(const SDL_Event& event) {
+bool BarChart<T>::handleEvent(const QTip::Event& event) {
     bool hasMousePosition = false;
 
     switch (event.type) {
-        case SDL_EVENT_MOUSE_MOTION:
+        case QTip::EventType::MouseMoved:
             mousePosition = {
-                event.motion.x,
-                event.motion.y
+                event.mouseMove.position.x,
+                event.mouseMove.position.y
             };
             hasMousePosition = true;
             break;
 
-        case SDL_EVENT_MOUSE_BUTTON_DOWN:
-        case SDL_EVENT_MOUSE_BUTTON_UP:
+        case QTip::EventType::MouseButtonPressed:
+        case QTip::EventType::MouseButtonReleased:
             mousePosition = {
-                event.button.x,
-                event.button.y
+                event.mouseButton.position.x,
+                event.mouseButton.position.y
             };
             hasMousePosition = true;
             break;
 
-        case SDL_EVENT_WINDOW_MOUSE_LEAVE:
-            _hoveredOn = static_cast<size_t>(-1);
-            calculateLayout();
-            break;
+        //case SDL_EVENT_WINDOW_MOUSE_LEAVE:
+        //    _hoveredOn = static_cast<size_t>(-1);
+        //    calculateLayout();
+        //    break;
 
         default:
             break;

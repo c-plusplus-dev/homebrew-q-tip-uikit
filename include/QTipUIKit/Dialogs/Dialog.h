@@ -15,7 +15,7 @@ public:
 
     ~Dialog() override;
 
-    bool handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const QTip::Event& event) override;
 
     [[nodiscard]] QTip::Point minimumSize() const override;
     [[nodiscard]] QTip::Point preferredSize() const override;

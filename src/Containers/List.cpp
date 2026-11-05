@@ -18,7 +18,7 @@ void List::renderImpl(QTip::Window& window) {
     Panel::renderImpl(window);
 }
 
-bool List::handleEvent(const SDL_Event& event) {
+bool List::handleEvent(const QTip::Event& event) {
     return Panel::handleEvent(event);
 }
 

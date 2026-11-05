@@ -5,6 +5,7 @@
 #ifndef QTIPUIKIT_HELPERS_H
 #define QTIPUIKIT_HELPERS_H
 #include <filesystem>
+#include <Q-Tip/Events/Event.h>
 #include <Q-Tip/Graphics/Color.h>
 #include <Q-Tip/Math/Point.h>
 #include <SDL3/SDL_events.h>
@@ -15,7 +16,6 @@ namespace QTip {
 
 namespace fs = std::filesystem;
 
-union SDL_Event;
 struct SDL_FColor;
 struct SDL_Renderer;
 struct SDL_Vertex;
@@ -33,11 +33,11 @@ namespace Detail {
 #endif
     }
 
-    SDL_Event transformEvent(const SDL_Event& event, const QTip::Point& position);
+    QTip::Event transformEvent(const QTip::Event& event, const QTip::Point& position);
 
-    QTip::Point eventPosition(const SDL_Event& event);
+    QTip::Point eventPosition(const QTip::Event& event);
 
-    void printMouseEvent(const SDL_Event& event);
+    void printMouseEvent(const QTip::Event& event);
 
     inline QTip::Color pieChartColor(double position) {
         position = std::clamp(position, 0.0, 1.0);
@@ -108,9 +108,7 @@ namespace Detail {
         return {buf};  // copy into std::string
     }
 
-    SDL_FColor toFColor(QTip::Color color);
-
-    std::string eventName(const SDL_Event& event);
+    std::string eventName(const QTip::Event& event);
 
     bool pointInTriangle(float px, float py, const QTip::Point& v0, const QTip::Point& v1, const QTip::Point& v2);
 

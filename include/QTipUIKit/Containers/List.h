@@ -24,7 +24,7 @@ public:
 
     ~List() override = default;
 
-    bool handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const QTip::Event& event) override;
 
     void remove(UIObject& object) override;
 

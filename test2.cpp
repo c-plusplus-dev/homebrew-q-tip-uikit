@@ -36,7 +36,7 @@ int main() {
         });
 
         while (!window.shouldClose() && !shouldClose) {
-            QTipRuntime::pollEvents();
+            QTipRuntime::fetchEvents();
 
             window->setRenderColor(Color::black);
             window->clear();
@@ -51,7 +51,7 @@ int main() {
     Button button(100, 100, 100, 100, "hello2", style);
 
     while (!window.shouldClose()) {
-        QTipRuntime::pollEvents();
+        QTipRuntime::fetchEvents();
 
         window->setRenderColor(Color::black);
         window->clear();

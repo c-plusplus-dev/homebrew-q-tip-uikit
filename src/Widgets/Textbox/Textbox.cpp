@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "Q-Tip/Graphics/RenderTexture.h"
+#include "Q-Tip/Window/Keycode.h"
 
 #include <SDL3/SDL.h>
 
@@ -207,20 +208,20 @@ void Textbox::renderImpl(Window& window) {
 // Event handling
 // ============================================================
 
-bool Textbox::handleEvent(const SDL_Event& event) {
+bool Textbox::handleEvent(const QTip::Event& event) {
     switch (event.type) {
 
     // --------------------------------------------------------
     // Mouse click
     // --------------------------------------------------------
 
-    case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-        if (event.button.button != SDL_BUTTON_LEFT)
+    case EventType::MouseButtonPressed: {
+        if (event.mouseButton.button != Left)
             break;
 
         if (_rect.isPointInside({
-            event.button.x,
-            event.button.y
+            event.mouseButton.position.x,
+            event.mouseButton.position.y
         })) {
 
             _active = true;
@@ -230,10 +231,10 @@ bool Textbox::handleEvent(const SDL_Event& event) {
              * coordinates before finding the caret.
              */
             const float mouseX =
-                event.button.x - _rect.origin.x;
+                event.mouseButton.position.x - _rect.origin.x;
 
             const float mouseY =
-                event.button.y - _rect.origin.y;
+                event.mouseButton.position.y - _rect.origin.y;
 
             _caretPosition =
                 getCaretPosition(
@@ -246,9 +247,8 @@ bool Textbox::handleEvent(const SDL_Event& event) {
 
             _blinkTimer = SDL_GetTicks();
             return false;
-        } else {
-            _active = false;
         }
+        _active = false;
 
         break;
     }
@@ -258,10 +258,10 @@ bool Textbox::handleEvent(const SDL_Event& event) {
     // Mouse wheel
     // --------------------------------------------------------
 
-    case SDL_EVENT_MOUSE_WHEEL: {
+    case EventType::MouseScrolled: {
         if (!_rect.isPointInside({
-            event.wheel.mouse_x,
-            event.wheel.mouse_y
+            event.mouseScroll.position.x,
+            event.mouseScroll.position.y
         })) {
             break;
         }
@@ -269,16 +269,16 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         Point maxScroll = _scrollMaxSize;
 
         float scrollX =
-            event.wheel.x *
-            event.wheel.x *
-            (event.wheel.x >= 0
+            event.mouseScroll.offset.x *
+            event.mouseScroll.offset.x *
+            (event.mouseScroll.offset.x >= 0
                 ? 1.0f
                 : -1.0f);
 
         float scrollY =
-            event.wheel.y *
-            event.wheel.y *
-            (event.wheel.y >= 0
+            event.mouseScroll.offset.y *
+            event.mouseScroll.offset.y *
+            (event.mouseScroll.offset.y >= 0
                 ? 1.0f
                 : -1.0f);
 
@@ -313,8 +313,8 @@ bool Textbox::handleEvent(const SDL_Event& event) {
     }
 
 
-    case SDL_EVENT_MOUSE_MOTION: {
-        if (_rect.isPointInside({event.motion.x, event.motion.y})) {
+    case EventType::MouseMoved: {
+        if (_rect.isPointInside({event.mouseMove.position.x, event.mouseMove.position.y})) {
             if (_textCursor)
                 SDL_SetCursor(_textCursor);
             return false;
@@ -330,7 +330,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
     // Keyboard
     // --------------------------------------------------------
 
-    case SDL_EVENT_KEY_DOWN: {
+    case EventType::KeyPressed: {
         if (!_active)
             break;
 
@@ -340,7 +340,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         // Backspace
         // ----------------------------------------------------
 
-        case SDLK_BACKSPACE:
+        case Keycode::BACKSPACE:
             deleteCharacter();
             break;
 
@@ -349,7 +349,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         // Left
         // ----------------------------------------------------
 
-        case SDLK_LEFT:
+        case Keycode::LEFT:
             if (_caretPosition > 0) {
                 --_caretPosition;
             }
@@ -363,7 +363,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         // Right
         // ----------------------------------------------------
 
-        case SDLK_RIGHT:
+        case Keycode::RIGHT:
             if (_caretPosition < getLineEndCaret(getCurrentLine())) {
                 ++_caretPosition;
             } else {
@@ -388,7 +388,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         // Up
         // ----------------------------------------------------
 
-        case SDLK_UP: {
+        case Keycode::UP: {
             const size_t currentLine =
                 getCurrentLine();
 
@@ -408,7 +408,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         // Down
         // ----------------------------------------------------
 
-        case SDLK_DOWN: {
+        case Keycode::DOWN: {
             const size_t currentLine =
                 getCurrentLine();
 
@@ -431,7 +431,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         // Home
         // ----------------------------------------------------
 
-        case SDLK_HOME:
+        case Keycode::HOME:
             _caretPosition =
                 getLineStartCaret(
                     getCurrentLine()
@@ -446,7 +446,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         // End
         // ----------------------------------------------------
 
-        case SDLK_END:
+        case Keycode::END:
             _caretPosition =
                 getLineEndCaret(
                     getCurrentLine()
@@ -462,7 +462,7 @@ bool Textbox::handleEvent(const SDL_Event& event) {
         // Enter
         // ----------------------------------------------------
 
-        case SDLK_RETURN:
+        case Keycode::RETURN:
             type("\n");
             break;
 
@@ -483,11 +483,14 @@ bool Textbox::handleEvent(const SDL_Event& event) {
     // Text input
     // --------------------------------------------------------
 
-    case SDL_EVENT_TEXT_INPUT: {
+    case EventType::TextEntered: {
         if (!_active)
             break;
 
-        type(event.text.text);
+        if (event.textInput.length < 1)
+            break;
+
+        type(std::string(event.textInput.text.data(), event.textInput.length));
 
         _preferredColumn = getCurrentColumn();
 

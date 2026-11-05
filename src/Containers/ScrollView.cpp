@@ -5,7 +5,6 @@
 #include "QTipUIKit/Containers/ScrollView.h"
 
 #include <algorithm>
-#include <SDL3/SDL_events.h>
 
 #include "include/Helpers.h"
 #include "QTipUIKit/Internal/Helpers.h"
@@ -242,12 +241,12 @@ void ScrollView::initTarget() {
     );
 }
 
-bool ScrollView::handleEvent(const SDL_Event& event) {
+bool ScrollView::handleEvent(const QTip::Event& event) {
     auto position = Detail::eventPosition(event);
     if (position != QTip::Point{-1, -1} && !rect().isPointInside(position))
         return true;
 
-    SDL_Event localEvent =
+    QTip::Event localEvent =
         Detail::transformEvent(event, _rect.origin);
 
     if (_settings.showScrollbar) {
@@ -278,10 +277,10 @@ bool ScrollView::handleEvent(const SDL_Event& event) {
         }
     }
 
-    if (event.type == SDL_EVENT_MOUSE_WHEEL) {
+    if (event.type == QTip::EventType::MouseScrolled) {
         QTip::Point delta{
-            event.wheel.x * _settings.scrollSpeed,
-            -event.wheel.y * _settings.scrollSpeed
+            event.mouseScroll.offset.x * _settings.scrollSpeed,
+            event.mouseScroll.offset.y * _settings.scrollSpeed
         };
 
         switch (_settings.direction) {

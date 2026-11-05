@@ -5,7 +5,6 @@
 #include "QTipUIKit/Widgets/ScrollBar/ScrollBar.h"
 
 #include <algorithm>
-#include <SDL3/SDL_events.h>
 
 #include "QTipUIKit/Internal/Helpers.h"
 
@@ -93,7 +92,7 @@ float ScrollBar::thumbLength() const {
 
 void ScrollBar::renderImpl(QTip::Window& window) {
     const float trackLengthValue = trackLength();
-    const float thumbLengthValue = thumbLength();
+    //const float thumbLengthValue = thumbLength();
 
     if (trackLengthValue <= 0.0f) {
         return;
@@ -182,12 +181,12 @@ void ScrollBar::renderImpl(QTip::Window& window) {
     }
 }
 
-bool ScrollBar::handleEvent(const SDL_Event& event) {
+bool ScrollBar::handleEvent(const QTip::Event& event) {
     switch (event.type) {
-        case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+        case QTip::EventType::MouseButtonPressed: {
             const QTip::Point mouse{
-                event.button.x,
-                event.button.y
+                event.mouseButton.position.x,
+                event.mouseButton.position.y
             };
 
             QTip::Rect thumb = thumbRect();
@@ -209,7 +208,7 @@ bool ScrollBar::handleEvent(const SDL_Event& event) {
             return false;
         }
 
-        case SDL_EVENT_MOUSE_MOTION: {
+        case QTip::EventType::MouseMoved: {
             if (!_dragging) {
                 break;
             }
@@ -224,8 +223,8 @@ bool ScrollBar::handleEvent(const SDL_Event& event) {
 
             const float mousePosition =
                 _orientation == ScrollBarOrientation::Horizontal
-                    ? event.motion.x
-                    : event.motion.y;
+                    ? event.mouseMove.position.x
+                    : event.mouseMove.position.y;
 
             float thumbPosition =
                 mousePosition - _dragOffset;
@@ -245,7 +244,7 @@ bool ScrollBar::handleEvent(const SDL_Event& event) {
             return true;
         }
 
-        case SDL_EVENT_MOUSE_BUTTON_UP: {
+        case QTip::EventType::MouseButtonReleased: {
             _dragging = false;
             _dragOffset = 0.0f;
             auto position = Detail::eventPosition(event);

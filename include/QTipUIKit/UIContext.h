@@ -10,7 +10,6 @@
 #include "Dialogs/Dialog.h"
 
 class UIObject;
-union SDL_Event;
 
 class UIContext {
 public:
@@ -22,14 +21,14 @@ private:
     std::vector<UIObject*> _objects;
     std::vector<std::unique_ptr<Dialog>> _dialogs;
     std::vector<Dialog*> _removalPendingDialogs;
-    std::vector<SDL_Event> _eventPool;
+    std::vector<QTip::Event> _eventPool;
 
     void add(UIObject* object);
     void remove(UIObject* object);
 
     void beforePresent(QTip::Window& window, QTip::Clock& clock, double dt);
 
-    void handleEvent(const SDL_Event& event);
+    void handleEvent(const QTip::Event& event);
 
     void removeDialog(Dialog* dialog);
 

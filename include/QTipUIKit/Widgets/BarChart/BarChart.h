@@ -113,7 +113,7 @@ public:
     size_t hoveredIndex() const;
     T* hoveredItem() const;
 
-    bool handleEvent(const SDL_Event& event) override;
+    bool handleEvent(const QTip::Event& event) override;
 
     QTip::Point minimumSize() const override;
     QTip::Point preferredSize() const override;

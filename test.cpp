@@ -1,4 +1,6 @@
 #include <Q-Tip/QTip.h>
+#include <Q-Tip/Window/Scancode.h>
+
 #include "QTipUIKit/UIKit.h"
 #include "QTipUIKit/Containers/ScrollView.h"
 #include "QTipUIKit/Dialogs/Dialog.h"
@@ -312,9 +314,9 @@ int main() {
     });
 
     while (!window.shouldClose()) {
-        QTipRuntime::pollEvents();
+        QTipRuntime::fetchEvents();
 
-        if (window.input().keyWasPressed(Key::Key_ESCAPE))
+        if (window.input().keyWasPressed(Scancode::ESCAPE))
             checkbox.checked = true;
 
         if (window.size() != windowSize) {

@@ -69,7 +69,7 @@ void UIContext::beforePresent(QTip::Window& window, QTip::Clock& clock, double d
     _firstEventPool = false;
 }
 
-void UIContext::handleEvent(const SDL_Event& event) {
+void UIContext::handleEvent(const QTip::Event& event) {
     if (_firstEventPool) {
         _eventPool.push_back(event);
         return;
