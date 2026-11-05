@@ -29,6 +29,8 @@ add_library(QTipUIKit STATIC
         src/Widgets/Checkbox/Checkbox.cpp
         src/Widgets/Label/Label.cpp
         include/QTipUIKit/Widgets/Label/Label.h
+        src/Widgets/ProgressBar/ProgressBar.cpp
+        include/QTipUIKit/Widgets/ProgressBar/ProgressBar.h
         src/Containers/Panel.cpp
         include/QTipUIKit/Containers/Panel.h
         src/Internal/Helpers.cpp
@@ -113,6 +115,22 @@ add_executable(QTipUIKitTest2
 )
 
 target_link_libraries(QTipUIKitTest2 PUBLIC
+    QTipUIKit::QTipUIKit
+)
+
+add_executable(QTipUIKitProgressBarTest
+    progressbar_test.cpp
+)
+
+target_link_libraries(QTipUIKitProgressBarTest PUBLIC
+    QTipUIKit::QTipUIKit
+)
+
+add_executable(QTipUIKitProgressBarTest2
+    test_progressbar.cpp
+)
+
+target_link_libraries(QTipUIKitProgressBarTest2 PUBLIC
     QTipUIKit::QTipUIKit
 )
 
