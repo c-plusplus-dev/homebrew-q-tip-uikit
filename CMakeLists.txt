@@ -118,6 +118,14 @@ target_link_libraries(QTipUIKitTest2 PUBLIC
     QTipUIKit::QTipUIKit
 )
 
+add_executable(QTipUIKitProgressBarTest
+    progressbar_test.cpp
+)
+
+target_link_libraries(QTipUIKitProgressBarTest PUBLIC
+    QTipUIKit::QTipUIKit
+)
+
 install(
     TARGETS QTipUIKit
     EXPORT QTipUIKitTargets
