@@ -10,6 +10,7 @@
 #include "QTipUIKit/Widgets/Button/Button.h"
 #include "QTipUIKit/Widgets/Checkbox/Checkbox.h"
 #include "QTipUIKit/Widgets/Label/Label.h"
+#include "QTipUIKit/Widgets/ProgressBar/ProgressBar.h"
 #include "QTipUIKit/UIObject.h"
 
 #include "QTipUIKit/Containers/Panel.h"
