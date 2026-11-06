@@ -63,7 +63,17 @@ protected:
 
     std::unique_ptr<QTip::RenderTexture> _target;
 
-    std::vector<UIObject*> _sortedObjects() const;
+    Lazy<std::vector<UIObject*>> _sortedObjects{[this] {
+        std::vector<UIObject*> sortedObjects;
+        for (const auto& object : _objects)
+            sortedObjects.push_back(object.get());
+        std::ranges::stable_sort(sortedObjects,
+                          [](const UIObject* a, const UIObject* b) {
+                              return a->zIndex() < b->zIndex();
+                          }
+        );
+        return sortedObjects;
+    }, &_zVersion};
 
     virtual void onAddObject(UIObject* object);
 

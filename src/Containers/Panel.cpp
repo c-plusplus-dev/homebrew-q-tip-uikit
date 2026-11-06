@@ -26,7 +26,7 @@ void Panel::renderImpl(QTip::Window& window) {
     window->renderRect({0, 0, _rect.size});
     window->resetBlendMode();
 
-    for (const auto& object : _objects) {
+    for (const auto& object : _sortedObjects()) {
         object->render(window);
     }
 
@@ -118,18 +118,6 @@ const QTip::Rect& Panel::rect() {
 void Panel::tick(QTip::Clock& clock, double dt) {
     for (auto& object : _objects)
         object->tick(clock, dt);
-}
-
-std::vector<UIObject*> Panel::_sortedObjects() const {
-    std::vector<UIObject*> sortedObjects;
-    for (const auto& object : _objects)
-        sortedObjects.push_back(object.get());
-    std::ranges::sort(sortedObjects,
-                      [](const UIObject* a, const UIObject* b) {
-                          return a->zIndex() < b->zIndex();
-                      }
-    );
-    return sortedObjects;
 }
 
 void Panel::onAddObject(UIObject*) {

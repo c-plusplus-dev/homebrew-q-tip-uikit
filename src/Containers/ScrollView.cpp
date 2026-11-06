@@ -188,7 +188,7 @@ void ScrollView::renderImpl(QTip::Window& window) {
     window->renderRect({0, 0, _contentSize});
     window->resetBlendMode();
 
-    for (const auto& child : _objects) {
+    for (const auto& child : _sortedObjects()) {
         const QTip::Rect childRect = child->rect();
 
         bool overlapping = overlap(childRect, {
