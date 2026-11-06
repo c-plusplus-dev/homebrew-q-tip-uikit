@@ -54,12 +54,13 @@ protected:
     static SDL_Window* window(QTip::Window& window) {
         return window;
     }
-    int _z;
 
     virtual void renderImpl(QTip::Window& window) = 0;
 
     QTip::Window* _window = nullptr;
     UIContext* _context = nullptr;
+
+    int _z = 0;
 
     // Mostly only for panels, just helps with sorting
     int _zVersion = 0;
