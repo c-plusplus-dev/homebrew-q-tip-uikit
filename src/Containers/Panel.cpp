@@ -69,11 +69,17 @@ void Panel::remove(UIObject& object) {
 
     if (it != _objects.end()) {
         _objects.erase(it);
+
+        ++_zVersion;
     }
 }
 
 void Panel::clear() {
+    if (_objects.empty())
+        return;
+
     _objects.clear();
+    ++_zVersion;
 }
 
 QTip::Point Panel::minimumSize() const {

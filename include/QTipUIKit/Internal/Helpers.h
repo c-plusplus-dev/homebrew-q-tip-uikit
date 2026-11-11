@@ -8,7 +8,13 @@
 #include <Q-Tip/Events/Event.h>
 #include <Q-Tip/Graphics/Color.h>
 #include <Q-Tip/Math/Point.h>
+#include <algorithm>
+#include <vector>
 #include <SDL3/SDL_events.h>
+
+#ifndef M_PI_2
+#define M_PI_2 1.57079632679489661923132169163975144
+#endif
 
 namespace QTip {
     class Window;

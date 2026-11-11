@@ -24,6 +24,7 @@ public:
 
         T* result = object.get();
         _objects.push_back(std::move(object));
+        ++_zVersion;
 
         result->parent = this;
 
@@ -36,6 +37,7 @@ public:
     T& add(std::unique_ptr<T> object) {
         T* result = object.get();
         _objects.push_back(std::move(object));
+        ++_zVersion;
 
         result->parent = this;
 

@@ -1,2 +1,6 @@
 cmake-build-debug
 push.sh
+
+build*
+
+!build-windows.sh
