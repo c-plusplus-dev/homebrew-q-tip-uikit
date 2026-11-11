@@ -173,7 +173,12 @@ namespace Detail {
 
         percent = std::min(percent, 1.0);
 
-        constexpr int segments = 30;
+         constexpr int SEGMENTS_PER_CIRCLE = 64;
+
+         const int segments = std::max(
+             1,
+             static_cast<int>(std::ceil(percent * SEGMENTS_PER_CIRCLE))
+         );
 
         const double endAngle =
             startAngle + 2.0 * std::numbers::pi_v<double> * percent;
